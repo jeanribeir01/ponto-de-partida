@@ -9,7 +9,7 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <Text className="text-2xl font-bold text-purple-500">PONTO DE PARTIDA</Text>
     </View>
   );
 }
