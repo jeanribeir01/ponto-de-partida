@@ -1,7 +1,6 @@
-import { Button, Input } from '@rneui/themed'
 import { Session } from '@supabase/supabase-js'
 import { useEffect, useState } from 'react'
-import { Alert, StyleSheet, View } from 'react-native'
+import { ActivityIndicator, Alert, Pressable, Text, TextInput, View } from 'react-native'
 import { supabase } from '../utils/supabase'
 
 export default function Account({ session }: { session: Session }) {
@@ -78,43 +77,33 @@ export default function Account({ session }: { session: Session }) {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Input label="Email" value={session?.user?.email} disabled />
-      </View>
-      <View style={styles.verticallySpaced}>
-        <Input label="Username" value={username || ''} onChangeText={(text) => setUsername(text)} />
-      </View>
-      <View style={styles.verticallySpaced}>
-        <Input label="Website" value={website || ''} onChangeText={(text) => setWebsite(text)} />
+    <View className="mt-10 p-3">
+      <View className="mb-3">
+        <Text className="text-sm text-gray-600 mb-1">Email</Text>
+        <Text className="border rounded px-3 py-2 bg-gray-100">{session?.user?.email}</Text>
       </View>
 
-      <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Button
-          title={loading ? 'Loading ...' : 'Update'}
-          onPress={() => updateProfile({ username, website, avatar_url: avatarUrl })}
-          disabled={loading}
-        />
+      <View className="mb-3">
+        <Text className="text-sm text-gray-600 mb-1">Username</Text>
+        <TextInput className="border rounded px-3 py-2" value={username} onChangeText={setUsername} />
       </View>
 
-      <View style={styles.verticallySpaced}>
-        <Button title="Sign Out" onPress={() => supabase.auth.signOut()} />
+      <View className="mb-4">
+        <Text className="text-sm text-gray-600 mb-1">Website</Text>
+        <TextInput className="border rounded px-3 py-2" value={website} onChangeText={setWebsite} />
       </View>
+
+      <Pressable
+        onPress={() => updateProfile({ username, website, avatar_url: avatarUrl })}
+        className="bg-blue-600 rounded py-3 items-center mb-3"
+        disabled={loading}
+      >
+        {loading ? <ActivityIndicator color="#fff" /> : <Text className="text-white">Update</Text>}
+      </Pressable>
+
+      <Pressable onPress={() => supabase.auth.signOut()} className="bg-gray-200 rounded py-3 items-center">
+        <Text>Sign Out</Text>
+      </Pressable>
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 40,
-    padding: 12,
-  },
-  verticallySpaced: {
-    paddingTop: 4,
-    paddingBottom: 4,
-    alignSelf: 'stretch',
-  },
-  mt20: {
-    marginTop: 20,
-  },
-})

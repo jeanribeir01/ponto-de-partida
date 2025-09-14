@@ -1,6 +1,5 @@
-import { Button, Input } from '@rneui/themed'
 import React, { useState } from 'react'
-import { Alert, AppState, StyleSheet, View } from 'react-native'
+import { ActivityIndicator, Alert, AppState, Pressable, Text, TextInput, View } from 'react-native'
 import { supabase } from '../utils/supabase'
 
 // Tells Supabase Auth to continuously refresh the session automatically if
@@ -47,49 +46,43 @@ export default function Auth() {
   }
 
   return (
-    <View style={styles.container}>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Input
-          label="Email"
-          leftIcon={{ type: 'font-awesome', name: 'envelope' }}
-          onChangeText={(text) => setEmail(text)}
+    <View className="mt-10 p-3">
+      <View className="mb-3">
+        <Text className="text-sm text-gray-600 mb-1">Email</Text>
+        <TextInput
+          className="border rounded px-3 py-2"
+          onChangeText={setEmail}
           value={email}
           placeholder="email@address.com"
-          autoCapitalize={'none'}
+          autoCapitalize="none"
+          keyboardType="email-address"
         />
       </View>
-      <View style={styles.verticallySpaced}>
-        <Input
-          label="Password"
-          leftIcon={{ type: 'font-awesome', name: 'lock' }}
-          onChangeText={(text) => setPassword(text)}
+      <View className="mb-4">
+        <Text className="text-sm text-gray-600 mb-1">Password</Text>
+        <TextInput
+          className="border rounded px-3 py-2"
+          onChangeText={setPassword}
           value={password}
-          secureTextEntry={true}
+          secureTextEntry
           placeholder="Password"
-          autoCapitalize={'none'}
+          autoCapitalize="none"
         />
       </View>
-      <View style={[styles.verticallySpaced, styles.mt20]}>
-        <Button title="Sign in" disabled={loading} onPress={() => signInWithEmail()} />
-      </View>
-      <View style={styles.verticallySpaced}>
-        <Button title="Sign up" disabled={loading} onPress={() => signUpWithEmail()} />
-      </View>
+      <Pressable
+        onPress={signInWithEmail}
+        className="bg-blue-600 rounded py-3 items-center mb-3"
+        disabled={loading}
+      >
+        {loading ? <ActivityIndicator color="#fff" /> : <Text className="text-white font-medium">Sign in</Text>}
+      </Pressable>
+      <Pressable
+        onPress={signUpWithEmail}
+        className="bg-gray-200 rounded py-3 items-center"
+        disabled={loading}
+      >
+        <Text className="text-black">Sign up</Text>
+      </Pressable>
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 40,
-    padding: 12,
-  },
-  verticallySpaced: {
-    paddingTop: 4,
-    paddingBottom: 4,
-    alignSelf: 'stretch',
-  },
-  mt20: {
-    marginTop: 20,
-  },
-})
