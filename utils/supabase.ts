@@ -17,17 +17,16 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
 
 export const clientesAPI = {
   async getAll() {
-    const { data, error } = await supabase
+    const response = await supabase
       .from('clientes')
       .select('*')
       .order('created_at', { ascending: false });
-    if (error) throw error;
-    return data;
+    if (response.error) throw response.error;
+    return response.data;
   },
   async create(cliente: any) {
-    // Obtenha o usuário autenticado
-    const { data } = await supabase.auth.getUser();
-    const userId = data?.user?.id;
+    const userResponse = await supabase.auth.getUser();
+    const userId = userResponse.data?.user?.id;
     if (!userId) throw new Error('Usuário não autenticado');
 
     const cleanCliente = {
@@ -38,23 +37,23 @@ export const clientesAPI = {
       endereco_longitude: cliente.endereco_longitude ?? null,
       user_id: userId,
     };
-    const { data, error } = await supabase
+    const insertResponse = await supabase
       .from('clientes')
       .insert([cleanCliente])
       .select()
       .single();
-    if (error) throw error;
-    return data;
+    if (insertResponse.error) throw insertResponse.error;
+    return insertResponse.data;
   },
   async update(id: string, updates: any) {
-    const { data, error } = await supabase
+    const updateResponse = await supabase
       .from('clientes')
       .update(updates)
       .eq('id', id)
       .select()
       .single();
-    if (error) throw error;
-    return data;
+    if (updateResponse.error) throw updateResponse.error;
+    return updateResponse.data;
   },
   async delete(id: string) {
     const { error } = await supabase
