@@ -41,11 +41,18 @@ export default function ClienteForm({ onSubmit, initialData, loading = false }: 
   };
 
   return (
-    <ScrollView className="p-4">
-      <View className="mb-4">
-        <Text className="text-sm font-medium text-gray-700 mb-2">Nome Completo *</Text>
+    <ScrollView style={{padding: 16}}>
+      <View style={{marginBottom: 16}}>
+        <Text style={{fontSize: 14, fontWeight: '500', color: '#374151', marginBottom: 8}}>Nome Completo *</Text>
         <TextInput
-          className="border border-gray-300 rounded-lg px-3 py-2 text-base"
+          style={{
+            borderWidth: 1,
+            borderColor: '#d1d5db',
+            borderRadius: 8,
+            paddingHorizontal: 12,
+            paddingVertical: 8,
+            fontSize: 16
+          }}
           value={nomeCompleto}
           onChangeText={setNomeCompleto}
           placeholder="Digite o nome completo"
@@ -53,10 +60,17 @@ export default function ClienteForm({ onSubmit, initialData, loading = false }: 
         />
       </View>
 
-      <View className="mb-4">
-        <Text className="text-sm font-medium text-gray-700 mb-2">Telefone</Text>
+      <View style={{marginBottom: 16}}>
+        <Text style={{fontSize: 14, fontWeight: '500', color: '#374151', marginBottom: 8}}>Telefone</Text>
         <TextInput
-          className="border border-gray-300 rounded-lg px-3 py-2 text-base"
+          style={{
+            borderWidth: 1,
+            borderColor: '#d1d5db',
+            borderRadius: 8,
+            paddingHorizontal: 12,
+            paddingVertical: 8,
+            fontSize: 16
+          }}
           value={telefone}
           onChangeText={setTelefone}
           placeholder="(00) 00000-0000"
@@ -65,10 +79,17 @@ export default function ClienteForm({ onSubmit, initialData, loading = false }: 
         />
       </View>
 
-      <View className="mb-4">
-        <Text className="text-sm font-medium text-gray-700 mb-2">Endereço</Text>
+      <View style={{marginBottom: 16}}>
+        <Text style={{fontSize: 14, fontWeight: '500', color: '#374151', marginBottom: 8}}>Endereço</Text>
         <TextInput
-          className="border border-gray-300 rounded-lg px-3 py-2 text-base"
+          style={{
+            borderWidth: 1,
+            borderColor: '#d1d5db',
+            borderRadius: 8,
+            paddingHorizontal: 12,
+            paddingVertical: 8,
+            fontSize: 16
+          }}
           value={endereco}
           onChangeText={setEndereco}
           placeholder="Digite o endereço completo"
@@ -79,10 +100,17 @@ export default function ClienteForm({ onSubmit, initialData, loading = false }: 
         />
       </View>
 
-      <View className="mb-6">
-        <Text className="text-sm font-medium text-gray-700 mb-2">Observações</Text>
+      <View style={{marginBottom: 24}}>
+        <Text style={{fontSize: 14, fontWeight: '500', color: '#374151', marginBottom: 8}}>Observações</Text>
         <TextInput
-          className="border border-gray-300 rounded-lg px-3 py-2 text-base"
+          style={{
+            borderWidth: 1,
+            borderColor: '#d1d5db',
+            borderRadius: 8,
+            paddingHorizontal: 12,
+            paddingVertical: 8,
+            fontSize: 16
+          }}
           value={observacao}
           onChangeText={setObservacao}
           placeholder="Observações adicionais"
@@ -95,15 +123,19 @@ export default function ClienteForm({ onSubmit, initialData, loading = false }: 
 
       <Pressable
         onPress={handleSubmit}
-        className={`rounded-lg py-3 px-4 items-center ${
-          loading ? 'bg-gray-400' : 'bg-blue-600'
-        }`}
+        style={{
+          borderRadius: 8,
+          paddingVertical: 12,
+          paddingHorizontal: 16,
+          alignItems: 'center',
+          backgroundColor: loading ? '#9ca3af' : '#2563eb'
+        }}
         disabled={loading}
       >
         {loading ? (
           <ActivityIndicator color="#fff" />
         ) : (
-          <Text className="text-white font-semibold text-base">
+          <Text style={{color: '#fff', fontWeight: '600', fontSize: 16}}>
             {initialData ? 'Atualizar Cliente' : 'Adicionar Cliente'}
           </Text>
         )}

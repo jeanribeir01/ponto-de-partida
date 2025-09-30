@@ -1,3 +1,4 @@
+import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React from 'react';
 import { FlatList, Pressable, RefreshControl, Text, View } from 'react-native';
@@ -10,21 +11,21 @@ export default function ClientesScreen() {
   const renderCliente = ({ item }: { item: Cliente }) => (
     <Pressable
       onPress={() => router.push(`./${item.id}`)}
-      className="bg-white rounded-lg p-4 mb-3 shadow-sm border border-gray-200"
+      style={{backgroundColor: '#fff', borderRadius: 8, padding: 16, marginBottom: 12, shadowColor: '#000', shadowOffset: {width: 0, height: 1}, shadowOpacity: 0.1, shadowRadius: 2, elevation: 2, borderWidth: 1, borderColor: '#e5e7eb'}}
     >
-      <Text className="text-lg font-semibold text-gray-900 mb-1">
+      <Text style={{fontSize: 18, fontWeight: '600', color: '#111827', marginBottom: 4}}>
         {item.nome_completo}
       </Text>
       {item.telefone && (
-        <Text className="text-gray-600 mb-1">{item.telefone}</Text>
+        <Text style={{color: '#4b5563', marginBottom: 4}}>{item.telefone}</Text>
       )}
       {item.endereco && (
-        <Text className="text-gray-500 text-sm mb-1" numberOfLines={2}>
+        <Text style={{color: '#6b7280', fontSize: 14, marginBottom: 4}} numberOfLines={2}>
           {item.endereco}
         </Text>
       )}
       {item.observacao && (
-        <Text className="text-gray-400 text-sm" numberOfLines={1}>
+        <Text style={{color: '#9ca3af', fontSize: 14}} numberOfLines={1}>
           {item.observacao}
         </Text>
       )}
@@ -32,14 +33,15 @@ export default function ClientesScreen() {
   );
 
   return (
-    <View className="flex-1 bg-gray-50">
-      <View className="flex-row justify-between items-center p-4 bg-white border-b border-gray-200">
-        <Text className="text-xl font-bold text-gray-900">Clientes</Text>
+    <View style={{flex: 1, backgroundColor: '#f9fafb'}}>
+      <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 16, backgroundColor: '#fff', borderBottomWidth: 1, borderBottomColor: '#e5e7eb'}}>
+        <Text style={{fontSize: 20, fontWeight: '700', color: '#111827'}}>Clientes</Text>
         <Pressable
           onPress={() => router.push('/clientes/novo')}
-          className="bg-blue-600 rounded-lg px-4 py-2"
+          style={{backgroundColor: '#2563eb', borderRadius: 8, paddingHorizontal: 12, paddingVertical: 8, flexDirection: 'row', alignItems: 'center'}}
         >
-          <Text className="text-white font-medium">Novo Cliente</Text>
+          <Ionicons name="add" size={20} color="#fff" />
+          <Text style={{color: '#fff', fontWeight: '500', marginLeft: 4}}>Novo</Text>
         </Pressable>
       </View>
 
@@ -52,10 +54,10 @@ export default function ClientesScreen() {
           <RefreshControl refreshing={loading} onRefresh={refreshClientes} />
         }
         ListEmptyComponent={
-          <View className="items-center justify-center py-12">
-            <Text className="text-gray-500 text-center">
+          <View style={{alignItems: 'center', justifyContent: 'center', paddingVertical: 48}}>
+            <Text style={{color: '#6b7280', textAlign: 'center'}}>
               Nenhum cliente encontrado.{'\n'}
-              Toque em "Novo Cliente" para adicionar o primeiro.
+              Toque em "Novo" para adicionar o primeiro.
             </Text>
           </View>
         }

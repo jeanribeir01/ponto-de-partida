@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createClient } from '@supabase/supabase-js';
 import 'react-native-url-polyfill/auto';
+import { MapsService } from '../services/mapsService';
 import { Cliente } from '../types/cliente';
 
 const supabaseUrl = 'https://cviqywvhhzyzedynrpkx.supabase.co';
@@ -30,11 +31,19 @@ export const clientesAPI = {
     const userId = data?.user?.id;
     if (!userId) throw new Error('Usuário não autenticado');
 
+    // geocode address if provided
+    let coords = null;
+    if (cliente.endereco) {
+      coords = await MapsService.geocodeEndereco(cliente.endereco);
+    }
+
     const { data: newCliente, error } = await supabase
       .from('clientes')
       .insert([{
         ...cliente,
         user_id: userId,
+        endereco_latitude: coords?.latitude ?? null,
+        endereco_longitude: coords?.longitude ?? null,
       }])
       .select()
       .single();
@@ -44,6 +53,15 @@ export const clientesAPI = {
   },
   
   async update(id: string, updates: Partial<Cliente>): Promise<Cliente> {
+    // if address updated, geocode
+    if (updates.endereco) {
+      const coords = await MapsService.geocodeEndereco(updates.endereco);
+      if (coords) {
+        updates.endereco_latitude = coords.latitude;
+        updates.endereco_longitude = coords.longitude;
+      }
+    }
+
     const { data, error } = await supabase
       .from('clientes')
       .update(updates)
@@ -60,5 +78,17 @@ export const clientesAPI = {
       .delete()
       .eq('id', id);
     if (error) throw error;
+  }
+,
+
+  async getClientesComCoordenadas(): Promise<Cliente[]> {
+    const { data, error } = await supabase
+      .from('clientes')
+      .select('*')
+      .not('endereco_latitude', 'is', null)
+      .not('endereco_longitude', 'is', null)
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+    return data || [];
   }
 };

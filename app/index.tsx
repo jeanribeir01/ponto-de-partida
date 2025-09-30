@@ -40,6 +40,15 @@ export default function App() {
             Gerenciar Clientes
           </Text>
         </Pressable>
+
+        <Pressable
+          onPress={() => router.push('./rotas')}
+          className="bg-green-600 rounded-lg p-4"
+        >
+          <Text className="text-white font-semibold text-lg text-center">
+            Criar Rotas
+          </Text>
+        </Pressable>
       </View>
 
       <Account key={session.user.id} session={session} />
